@@ -54,7 +54,13 @@ function AnalyticsPage() {
           <h3>Status Breakdown</h3>
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
-              <Pie data={statusData} dataKey="value" nameKey="name" outerRadius={90} label>
+                <Pie 
+                    data={statusData} 
+                    dataKey="value" 
+                    nameKey="name" 
+                    outerRadius={90} 
+                    label={({ name, value }) => `${name}: ${value}`}
+              >
                 {statusData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
