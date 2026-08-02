@@ -101,44 +101,21 @@ function AnalyticsPage() {
                 />
             </div>
 
-
-            <div
-                style={{
-                    display: "flex",
-                    gap: "40px",
-                    marginTop: "40px"
-                }}
-            >
-
-                <div style={{ width: 350, height: 300 }}>
-                    <h3>Status</h3>
-
-                    <ResponsiveContainer>
-                        <PieChart>
-
-                            <Pie
-                                data={statusData}
-                                dataKey="value"
-                                nameKey="name"
-                                outerRadius={90}
-                                label
-                            >
-                                {
-                                    statusData.map((item, index) => (
-                                        <Cell key={index} />
-                                    ))
-                                }
-
-                            </Pie>
-
-                            <Tooltip />
-                            <Legend />
-
-                        </PieChart>
-                    </ResponsiveContainer>
-
-                </div>
-
+      <div style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap' }}>
+        <div style={{ width: 350, height: 300 }}>
+          <h3>Status Breakdown</h3>
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie data={statusData} dataKey="value" nameKey="name" outerRadius={90} label>
+                {statusData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
 
                 <div style={{ width: 400, height: 300 }}>
 
