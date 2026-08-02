@@ -1,0 +1,93 @@
+.home {
+    min-height: 100vh;
+    padding: 40px 80px;
+}
+
+.hero {
+    max-width: 900px;
+    margin: 60px auto;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 56px;
+    font-weight: 700;
+    letter-spacing: -2px;
+}
+
+.hero h1 span {
+    color: #2563eb;
+}
+
+.hero p {
+    font-size: 20px;
+    color: #64748b;
+    margin-top: 20px;
+}
+
+.hero button {
+    margin-top: 35px;
+    padding: 14px 35px;
+    border-radius: 10px;
+    border: none;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.section-title {
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+}
+
+.card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 30px;
+    transition: 0.25s;
+}
+
+.card:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    transform: translateY(-5px);
+}
+
+.card h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.location {
+    color: #64748b;
+}
+
+.details {
+    display: flex;
+    justify-content: space-between;
+    margin: 25px 0;
+    color: #475569;
+}
+
+.join {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: none;
+    background: #0f172a;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.join:hover {
+    background: #2563eb;
+}

@@ -3,7 +3,8 @@ const router = express.Router();
 const Queue = require('../models/Queue');
 const { verifyToken, isAdmin } = require('../middleware/auth');
 
-router.get('/queue/:id', verifyToken, isAdmin, async (req, res) => {
+
+ router.get('/queue/:id', verifyToken, async (req, res) => { 
   try {
     const queue = await Queue.findById(req.params.id);
     if (!queue) return res.status(404).json({ message: 'Queue not found' });
@@ -12,18 +13,17 @@ router.get('/queue/:id', verifyToken, isAdmin, async (req, res) => {
     const skippedEntries = queue.queue.filter(q => q.status === 'skipped');
     const waitingEntries = queue.queue.filter(q => q.status === 'waiting');
 
-    // Average wait time = averageServiceTime * average position at join time
-    // Simplified: total served * averageServiceTime gives rough total serving time
-    const avgWaitTime = queue.averageServiceTime; // seconds (base estimate)
+    
+    const avgWaitTime = queue.averageServiceTime; 
 
-    // Peak hours — group joinedAt by hour of day
+    
     const hourCounts = {};
     queue.queue.forEach(entry => {
       const hour = new Date(entry.joinedAt).getHours();
       hourCounts[hour] = (hourCounts[hour] || 0) + 1;
     });
 
-    // Find peak hour (hour with most joins)
+    
     let peakHour = null;
     let maxCount = 0;
     for (const hour in hourCounts) {
@@ -50,4 +50,48 @@ router.get('/queue/:id', verifyToken, isAdmin, async (req, res) => {
   }
 });
 
+router.get('/top-skipped', async (req, res) => {
+  try {
+
+    const Queue = require('../models/Queue');
+
+    const result = await Queue.aggregate([
+      {
+        $unwind: "$queue"
+      },
+      {
+        $match: {
+          "queue.status": "skipped"
+        }
+      },
+      {
+        $group: {
+          _id: "$queue.tokenNumber",
+          skippedCount: {
+            $sum: 1
+          }
+        }
+      },
+      {
+        $sort: {
+          skippedCount: -1
+        }
+      },
+      {
+        $limit: 3
+      }
+    ]);
+
+
+    res.json(result);
+
+
+  } catch(err) {
+
+    res.status(500).json({
+      error: err.message
+    });
+
+  }
+});
 module.exports = router;

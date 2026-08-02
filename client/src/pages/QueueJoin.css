@@ -1,0 +1,71 @@
+.join-page {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.join-card {
+    background: white;
+    width: 420px;
+    max-width: 90%;
+    padding: 45px;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2563eb;
+    margin-bottom: 30px;
+}
+
+.join-card h1 {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.join-card p {
+    color: #64748b;
+    margin-bottom: 30px;
+}
+
+.join-card button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: #0f172a;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.join-card button:hover {
+    background: #2563eb;
+}
+
+.success {
+    width: 70px;
+    height: 70px;
+    margin: auto;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #16a34a;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.token {
+    font-size: 55px;
+    font-weight: 700;
+    color: #2563eb;
+    margin: 20px;
+}
