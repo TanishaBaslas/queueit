@@ -1,4 +1,6 @@
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 import { useState, useEffect } from "react";
+
 import axios from "axios";
 import {
     BarChart,
@@ -131,7 +133,7 @@ function AnalyticsPage() {
 
                             <Tooltip />
 
-                            <Bar dataKey="joins" />
+                            <Bar dataKey="joins" fill="#0088FE" />
 
                         </BarChart>
 
