@@ -1,75 +1,191 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-const QUEUE_ID = '6a64f3f1bc1cc676e2cf432d'; // hardcoded for now, testing
-const API_BASE = 'http://localhost:5000/api/admin';
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function AdminDashboard() {
-  const [queueData, setQueueData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const token = localStorage.getItem('token'); // login se milega baad mein
+    const [queueData, setQueueData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-  const fetchStats = async () => {
-    try {
-      const res = await axios.get(`http://localhost:5000/api/stats/queue/${QUEUE_ID}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setQueueData(res.data);
-    } catch (err) {
-      console.error(err);
+    const token = localStorage.getItem("token");
+
+    const QUEUE_ID =
+        localStorage.getItem("queueId") ||
+        "6a6f3ce5073f0abdb5d7da79";
+
+    const headers = {
+        Authorization: `Bearer ${token}`
+    };
+
+    const fetchStats = async () => {
+        try {
+            const res = await axios.get(
+                `${API}/api/stats/queue/${QUEUE_ID}`,
+                { headers }
+            );
+
+            setQueueData(res.data);
+            setError("");
+        } catch (err) {
+            console.log(err);
+            setError(
+                err.response?.data?.message ||
+                "Cannot load dashboard"
+            );
+        }
+    };
+
+    useEffect(() => {
+        fetchStats();
+    }, []);
+
+    const handleAction = async (action) => {
+        try {
+            setLoading(true);
+
+            const method = action === "walkin" ? "post" : "patch";
+
+            const res = await axios[method](
+                `${API}/api/admin/queues/${QUEUE_ID}/${action}`,
+                {},
+                { headers }
+            );
+
+            alert(res.data.message);
+            fetchStats();
+
+        } catch (err) {
+            console.log(err.response);
+
+            alert(
+                err.response?.data?.message ||
+                "Action failed"
+            );
+
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (!token) {
+        return <h2>Please login first</h2>;
     }
-  };
 
-  useEffect(() => {
-    fetchStats();
-  }, []);
+    if (error) {
+        return (
+            <div>
+                <h2>Error</h2>
+                <p>{error}</p>
 
-  const handleAction = async (action) => {
-    setLoading(true);
-    try {
-      const method = action === 'walkin' ? 'post' : 'patch';
-      await axios[method](`${API_BASE}/queues/${QUEUE_ID}/${action}`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      await fetchStats(); // refresh after action
-    } catch (err) {
-      console.error(err);
-      alert('Action failed. Check console.');
+                <button onClick={fetchStats}>
+                    Retry
+                </button>
+            </div>
+        );
     }
-    setLoading(false);
-  };
 
-  if (!queueData) return <p>Loading...</p>;
+    if (!queueData) {
+        return <h2>Loading dashboard...</h2>;
+    }
 
-  return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h1>Admin Dashboard — {queueData.queueName}</h1>
+    return (
+        <div style={{ padding: "40px" }}>
+            <h1>Admin Dashboard</h1>
 
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
-        <div style={cardStyle}>Now Serving: <b>{queueData.nowServing}</b></div>
-        <div style={cardStyle}>Waiting: <b>{queueData.waitingCount}</b></div>
-        <div style={cardStyle}>Served: <b>{queueData.servedCount}</b></div>
-        <div style={cardStyle}>Status: <b>{queueData.isActive ? 'Active' : 'Paused'}</b></div>
-      </div>
+            <h2>
+                {queueData.queueName}
+            </h2>
 
-      <div style={{ display: 'flex', gap: '1rem' }}>
-        <button disabled={loading} onClick={() => handleAction('serve')}>Serve Next</button>
-        <button disabled={loading} onClick={() => handleAction('skip')}>Skip</button>
-        <button disabled={loading} onClick={() => handleAction('pause')}>
-          {queueData.isActive ? 'Pause' : 'Resume'}
-        </button>
-        <button disabled={loading} onClick={() => handleAction('walkin')}>Add Walk-in</button>
-      </div>
-    </div>
-  );
+            <div
+                style={{
+                    display: "flex",
+                    gap: "20px",
+                    marginTop: "30px"
+                }}
+            >
+                <Card
+                    title="Now Serving"
+                    value={queueData.nowServing}
+                />
+
+                <Card
+                    title="Waiting"
+                    value={queueData.waitingCount}
+                />
+
+                <Card
+                    title="Served"
+                    value={queueData.servedCount}
+                />
+
+                <Card
+                    title="Status"
+                    value={
+                        queueData.isActive
+                            ? "Active"
+                            : "Paused"
+                    }
+                />
+            </div>
+
+            <h3 style={{ marginTop: "40px" }}>
+                Queue Controls
+            </h3>
+
+            <div
+                style={{
+                    display: "flex",
+                    gap: "15px"
+                }}
+            >
+                <button
+                    disabled={loading}
+                    onClick={() => handleAction("serve")}
+                >
+                    Serve Next
+                </button>
+
+                <button
+                    disabled={loading}
+                    onClick={() => handleAction("skip")}
+                >
+                    Skip
+                </button>
+
+                <button
+                    disabled={loading}
+                    onClick={() => handleAction("pause")}
+                >
+                    Pause / Resume
+                </button>
+
+                <button
+                    disabled={loading}
+                    onClick={() => handleAction("walkin")}
+                >
+                    Add Walk-in
+                </button>
+            </div>
+        </div>
+    );
 }
 
-const cardStyle = {
-  border: '1px solid #ccc',
-  borderRadius: '8px',
-  padding: '1rem',
-  minWidth: '120px',
-  textAlign: 'center'
-};
+function Card({ title, value }) {
+    return (
+        <div
+            style={{
+                padding: "20px",
+                border: "1px solid #ddd",
+                borderRadius: "12px",
+                minWidth: "130px",
+                textAlign: "center"
+            }}
+        >
+            <h3>{title}</h3>
+            <h2>{value}</h2>
+        </div>
+    );
+}
 
 export default AdminDashboard;

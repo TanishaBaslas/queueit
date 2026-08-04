@@ -1,38 +1,39 @@
-import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import AdminDashboard from './pages/AdminDashboard';
-import AnalyticsPage from './pages/AnalyticsPage';
-import LoginPage from './pages/LoginPage';
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
-function AuthSuccess() {
-  const navigate = useNavigate();
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('token');
-    if (token) {
-      localStorage.setItem('token', token);
-      navigate('/');
-    }
-  }, [navigate]);
-  return <p>Logging in...</p>;
-}
+import Login from "./pages/Login";
+import AuthSuccess from "./pages/AuthSuccess";
+import AdminDashboard from "./pages/AdminDashboard";
+import AnalyticsPage from "./pages/AnalyticsPage";
+import Home from "./pages/Home";
+import QueueJoin from "./pages/QueueJoin";
+import QueueStatus from "./pages/QueueStatus";
+
+import "./App.css";
 
 function App() {
-  const isLoggedIn = !!localStorage.getItem('token');
-
   return (
     <BrowserRouter>
-      {isLoggedIn && (
-        <nav style={{ padding: '1rem', background: '#333', display: 'flex', gap: '1.5rem' }}>
-          <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>Dashboard</Link>
-          <Link to="/analytics" style={{ color: 'white', textDecoration: 'none' }}>Analytics</Link>
-        </nav>
-      )}
+      <nav className="navbar">
+        <div className="navbar-logo">QueueIt</div>
+
+        <div className="nav-links">
+          <Link to="/">Home</Link>
+          <Link to="/admin">Admin</Link>
+          <Link to="/analytics">Analytics</Link>
+          <Link to="/notifications">
+            <span className="notification">🔔 Notifications</span>
+          </Link>
+        </div>
+      </nav>
+
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/join/:id" element={<QueueJoin />} />
+        <Route path="/queue/:id/status" element={<QueueStatus />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/auth-success" element={<AuthSuccess />} />
-        <Route path="/" element={isLoggedIn ? <AdminDashboard /> : <LoginPage />} />
-        <Route path="/analytics" element={isLoggedIn ? <AnalyticsPage /> : <LoginPage />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/analytics" element={<AnalyticsPage />} />
       </Routes>
     </BrowserRouter>
   );
