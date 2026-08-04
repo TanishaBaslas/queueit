@@ -15,7 +15,7 @@ const { setSocket } = require("./utils/socket");
 
 const app = express();
 
-
+app.set("trust proxy", 1); 
 
 // ===============================
 // MIDDLEWARE

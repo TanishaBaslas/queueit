@@ -29,7 +29,7 @@ router.get(
       }
     );
 
-    res.redirect(`http://localhost:5173/auth-success?token=${token}`);
+    res.redirect(`https://queueit-vert.vercel.app/auth-success?token=${token}`);
   }
 );
 
