@@ -17,8 +17,8 @@ router.get('/google/callback',
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
-    // Abhi ke liye JSON mein bhej rahe hain, baad mein frontend redirect kar sakte ho
-    res.json({ message: 'Login successful', token, user: req.user });
+    // Frontend pe redirect karo token ke saath
+    res.redirect(`http://localhost:5173/auth-success?token=${token}`);
   }
 );
 
