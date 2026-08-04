@@ -15,7 +15,7 @@ import {
     Legend
 } from "recharts";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL || "https://queueit-backend-oaib.onrender.com";
 
 function AnalyticsPage() {
     const [stats, setStats] = useState(null);

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Home.css";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL || "https://queueit-backend-oaib.onrender.com";
 
 function Home() {
     const [queues, setQueues] = useState([]);

@@ -1,6 +1,6 @@
 function LoginPage() {
   const handleLogin = () => {
-    window.location.href = 'http://localhost:5000/auth/google';
+    window.location.href = 'https://queueit-backend-oaib.onrender.com/auth/google';
   };
 
   return (

@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import "./QueueJoin.css";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL || "https://queueit-backend-oaib.onrender.com";
 
 function QueueJoin() {
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL || "https://queueit-backend-oaib.onrender.com";
 
 function AdminDashboard() {
     const [queueData, setQueueData] = useState(null);

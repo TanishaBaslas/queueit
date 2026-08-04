@@ -24,8 +24,8 @@ const app = express();
 
 app.use(
   cors({
-    origin:"http://localhost:5173",
-    credentials:true
+    origin: "https://queueit-vert.vercel.app",
+    credentials: true
   })
 );
 
@@ -105,23 +105,15 @@ const server = http.createServer(app);
 
 
 const io = new Server(
-server,
-{
-
-cors:{
-
-origin:"http://localhost:5173",
-
-methods:[
-"GET",
-"POST"
-],
-
-credentials:true
-
-}
-
-});
+  server,
+  {
+    cors: {
+      origin: "https://queueit-vert.vercel.app",
+      methods: ["GET", "POST"],
+      credentials: true
+    }
+  }
+);
 
 
 
@@ -182,10 +174,6 @@ socket.id
 
 );
 
-
-
-
-
 // ===============================
 // ROUTES
 // ===============================
@@ -204,17 +192,10 @@ res.send(
 
 });
 
-
-
-
-
 app.use(
 "/auth",
 require("./routes/authRoutes")
 );
-
-
-
 
 app.use(
 "/api/queues",
