@@ -250,7 +250,7 @@ require("./routes/statsRoutes")
 
 app.use(
 "/api/notifications",
-require("./routes/notificationRoutes")
+require("./routes/NotificationRoutes")
 );
 
 
